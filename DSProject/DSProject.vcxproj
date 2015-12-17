@@ -147,10 +147,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Coordinate.h" />
+    <ClInclude Include="DBSCAN.h" />
+    <ClInclude Include="DisjointSet.h" />
     <ClInclude Include="kdtree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Coordinate.cpp" />
+    <ClCompile Include="DBSCAN.cpp" />
+    <ClCompile Include="DisjointSet.cpp" />
+    <ClCompile Include="kdtree.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
