@@ -3,8 +3,6 @@
 #include <cmath>
 int depthForSort;
 
-extern KDnode* buildKDtree(float**, int, int, int);
-
 KDtree::KDtree(float** points, int dimension, int numOfPoints)
 {
 	dim = dimension;
@@ -13,6 +11,12 @@ KDtree::KDtree(float** points, int dimension, int numOfPoints)
 	for (int i = 0; i < numOfPoints; i++)
 		this->points[i] = new Coordinate(points[i], i, dimension);
 	root = buildKDtree(this->points, 0, num, 0);
+}
+
+KDtree::~KDtree()
+{
+	serialNodeKiller(root);
+	free(points);
 }
 
 void KDtree::print()
@@ -25,7 +29,9 @@ CoordinateSet* KDtree::getNeighbors(KDnode* node, float ep)
 
 	vector<Coordinate*>* points = new vector<Coordinate*>();
 	getNei_recur(root, node->coord->values, ep, points);
-	return new CoordinateSet(points);
+	CoordinateSet * result = new CoordinateSet(points);
+	delete points;
+	return result;
 }
 
 void KDtree::getNei_recur(KDnode* node, float* tarval, float ep, vector<Coordinate*> *list)
@@ -92,6 +98,11 @@ KDnode::KDnode(Coordinate* coor, int h)
 	height = h;
 }
 
+KDnode::~KDnode()
+{
+	delete coord;
+}
+
 void KDnode::print()
 {
 	if (left)
@@ -139,8 +150,17 @@ int pointcmp(const void* a, const void* b)
 
 KDnode* buildKDtree(Coordinate** points, int start, int end, int depth)
 {
+	//printf("Build KD tree for %d, %d\n", start, end);
 	if (end == start + 1)
 		return new KDnode(points[start], depth);
+	if (end == start)
+	{
+		return NULL;
+	}
+	if (end < start)
+	{
+		return NULL;
+	}
 
 	int medianPos = find_medianPos(points, start, end, depth);
 	float median = points[medianPos]->val(depth);
@@ -149,4 +169,15 @@ KDnode* buildKDtree(Coordinate** points, int start, int end, int depth)
 	result->left = buildKDtree(points, start, medianPos + 1, depth + 1);
 	result->right = buildKDtree(points, medianPos + 1, end, depth + 1);
 	return result;
+}
+
+void serialNodeKiller(KDnode* node)
+{
+	if (!node)
+		return;
+	if (node->left)
+		serialNodeKiller(node->left);
+	if (node->right)
+		serialNodeKiller(node->right);
+	delete node;
 }

@@ -11,6 +11,8 @@ class KDtree
 {
 public:
 	KDtree(float** points, int dimension, int numOfPoints);
+	~KDtree();
+
 	CoordinateSet* getNeighbors(KDnode*, float ep);
 	void getNei_recur(KDnode* node, float* tarval, float ep, vector<Coordinate*> *list);
 	void print();
@@ -26,6 +28,8 @@ class KDnode
 public:
 	KDnode(float val,int h);
 	KDnode(Coordinate* coord, int h);
+	~KDnode();
+
 	void print();
 
 	int height;
@@ -35,6 +39,7 @@ public:
 	KDnode* left, *right;
 };
 
+void serialNodeKiller(KDnode*);
 KDnode* buildKDtree(Coordinate** points, int start, int end, int depth);
 int find_medianPos(Coordinate** points, int start, int end, int depth);
 int pointcmp(const void*, const void*);

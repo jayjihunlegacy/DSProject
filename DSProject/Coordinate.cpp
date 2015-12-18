@@ -13,6 +13,7 @@ Coordinate::Coordinate(float*inputs, int id, int dim)
 
 Coordinate::~Coordinate()
 {
+	//printf("Coordinate dtr called for point id %d\n", pointid);
 	free(values);
 }
 
@@ -48,11 +49,16 @@ CoordinateSet::CoordinateSet(vector<Coordinate*> *pts)
 		points = NULL;
 	else
 	{
-		
 		sort(pts->begin(), pts->end(), Coordinate::comp);
 		points = (Coordinate**)malloc(sizeof(Coordinate*)*num);
 		memcpy(points, &(pts->front()), sizeof(Coordinate*)*num);
 	}	
+}
+
+CoordinateSet::~CoordinateSet()
+{
+	//printf("CoordinateSet dtr Called\n");
+	free(points);
 }
 
 void CoordinateSet::print()

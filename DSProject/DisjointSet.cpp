@@ -16,6 +16,8 @@ DSnode* DSnode::FIND(DSnode* tar)
 
 void DSnode::UNION(DSnode* a, DSnode* b)
 {
+	a = FIND(a);
+	b = FIND(b);
 	int ranka = a->rank;
 	int rankb = b->rank;
 	if (ranka == rankb)

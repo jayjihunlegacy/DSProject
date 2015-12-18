@@ -9,9 +9,15 @@ DBSCAN::DBSCAN(KDtree*kdtree, float epsilon, int minNeighbor)
 	set = (DSnode**)malloc(num*sizeof(DSnode*));
 }
 
+DBSCAN::~DBSCAN()
+{
+	for (int i = 0; i < num; i++)
+		delete set[i];
+	free(set);
+}
+
 void DBSCAN::run()
 {
-	printf("HELLO WORLD!\n");
 	//for each, make!
 	setmake(0,kdtree->root);
 	sort(set, &set[num], DSnode::comp);
@@ -20,9 +26,9 @@ void DBSCAN::run()
 
 	for (int i = 0; i < num; i++)
 	{
-		int point_id = set[i]->coord->pointid;
+		int point_id = set[i]->coord->pointid + 1;
 		int c_id = DSnode::FIND(set[i])->coord->pointid;
-		c_id = set[i]->coord->ismember ? c_id : -1;
+		c_id = set[i]->coord->ismember ? c_id + 1: -1;
 		printf("%d %d\n",point_id,c_id);
 	}
 }
@@ -58,7 +64,10 @@ void DBSCAN::setrun(KDnode* node)
 		CoordinateSet * cs = kdtree->getNeighbors(node, ep);
 		//cs->print();
 		if (cs->num < 2)
+		{
+			delete cs;
 			return;
+		}
 		node->coord->iscore = true;
 		for (int i = 0; i < cs->num; i++)
 		{
@@ -75,5 +84,6 @@ void DBSCAN::setrun(KDnode* node)
 				DSnode::UNION(set[node->coord->pointid], set[probe->pointid]);
 			}
 		}
+		delete cs;
 	}
 }

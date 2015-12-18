@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+
 using namespace std;
 class Coordinate
 {
@@ -26,9 +27,9 @@ class CoordinateSet
 {
 public:
 	CoordinateSet(vector<Coordinate*> *);
+	~CoordinateSet();
 
 	Coordinate**points;
-	//vector<Coordinate*>* points;
 	int num;
 	void print();
 };
