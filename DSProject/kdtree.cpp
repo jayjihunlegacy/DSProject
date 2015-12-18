@@ -22,19 +22,15 @@ void KDtree::print()
 
 CoordinateSet* KDtree::getNeighbors(KDnode* node, float ep)
 {
-	//Find points close to "node" in Euclidean manner.
-	/*
-	1. Find close points in Rectangular.
-	2. Filter points.
-	*/
-	vector<Coordinate*>* points = new vector<Coordinate*>();
-	getNei_recur(node, node->coord->values, ep, points);
 
+	vector<Coordinate*>* points = new vector<Coordinate*>();
+	getNei_recur(root, node->coord->values, ep, points);
 	return new CoordinateSet(points);
 }
 
 void KDtree::getNei_recur(KDnode* node, float* tarval, float ep, vector<Coordinate*> *list)
 {
+	//printf("GETNEI called\n");
 	if (!node)
 		return;
 	if (node->type == HYPERPLANE)
@@ -63,9 +59,10 @@ void KDtree::getNei_recur(KDnode* node, float* tarval, float ep, vector<Coordina
 	{
 		float aroundvalue = node->coord->val(i);
 		float basevalue = tarval[i];
+		float dif = aroundvalue - basevalue;
 		if (basevalue != aroundvalue)
 			issame = false;
-		dis_square += (aroundvalue*aroundvalue + basevalue*basevalue);
+		dis_square += dif*dif;
 	}
 
 	if (issame)
@@ -115,21 +112,29 @@ int find_medianPos(Coordinate** points, int start, int end, int depth)
 		return start;
 	depthForSort = depth;
 	qsort(&points[start], n, sizeof(Coordinate*), pointcmp);
-	return start + (n - 1)/ 2;
 
-	/*
-
-	a point to OPTIMIZE!!!
-
-	*/
+	int result = start + (n - 1) / 2;
+	while (result < end - 1)
+	{
+		if (points[result]->val(depth) == points[result + 1]->val(depth))
+			result++;
+		else
+			break;
+	}
+	return result;
 }
 
 
 int pointcmp(const void* a, const void* b)
 {
+	
 	float aval = (*(Coordinate**)a)->val(depthForSort);
 	float bval = (*(Coordinate**)b)->val(depthForSort);
-	return aval < bval ? -1 : 1;
+	if (aval < bval)
+		return -1;
+	if (aval == bval)
+		return 0;
+	return 1;
 }
 
 KDnode* buildKDtree(Coordinate** points, int start, int end, int depth)

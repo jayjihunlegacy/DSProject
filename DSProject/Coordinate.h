@@ -27,7 +27,8 @@ class CoordinateSet
 public:
 	CoordinateSet(vector<Coordinate*> *);
 
-	vector<Coordinate*>*points;
+	Coordinate**points;
+	//vector<Coordinate*>* points;
 	int num;
 	void print();
 };

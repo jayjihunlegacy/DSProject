@@ -43,16 +43,25 @@ bool Coordinate::comp(const Coordinate* t1, const Coordinate* t2)
 
 CoordinateSet::CoordinateSet(vector<Coordinate*> *pts)
 {
-	points = pts;
 	num = pts->size();
+	if (num == 0)
+		points = NULL;
+	else
+	{
+		
+		sort(pts->begin(), pts->end(), Coordinate::comp);
+		points = (Coordinate**)malloc(sizeof(Coordinate*)*num);
+		memcpy(points, &(pts->front()), sizeof(Coordinate*)*num);
+	}	
 }
 
 void CoordinateSet::print()
 {
-	sort(points->begin(), points->end(), Coordinate::comp);
-	Coordinate *probe = points[0];
-	for (int i = 0; i < points->size(); i++)
+	if (num == 0)
+		return;
+	for (int i = 0; i < num; i++)
 	{
-		
+		Coordinate* probe = points[i];
+		printf("%s\n", probe->tostring().c_str());
 	}
 }

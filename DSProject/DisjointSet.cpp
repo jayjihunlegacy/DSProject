@@ -14,7 +14,7 @@ DSnode* DSnode::FIND(DSnode* tar)
 	return tar->parent = FIND(tar->parent);
 }
 
-DSnode* DSnode::UNION(DSnode* a, DSnode* b)
+void DSnode::UNION(DSnode* a, DSnode* b)
 {
 	int ranka = a->rank;
 	int rankb = b->rank;
@@ -22,10 +22,10 @@ DSnode* DSnode::UNION(DSnode* a, DSnode* b)
 	{
 		a->rank++;
 		b->parent = a;
-		return a;
+		return;
 	}
 	DSnode* boss = ranka > rankb ? a : b;
 	DSnode* under = ranka > rankb ? b : a;
 	under->parent = boss;
-	return boss;
+	return;
 }
