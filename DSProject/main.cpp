@@ -8,6 +8,7 @@ float ** datainput(int n, int k)
 	float ** result = (float**)malloc(sizeof(float*)*n);
 	ifstream fin;
 	fin.open("C://data.txt");
+	
 	for (int i = 0; i < n; i++)
 	{
 		result[i] = (float*)malloc(sizeof(float)*k);
@@ -150,6 +151,6 @@ int main()
 {
 	//_CrtSetBreakAlloc(157);
 	//test1();
-	test3();
+	test2();
 	_CrtDumpMemoryLeaks();
 }
