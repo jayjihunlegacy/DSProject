@@ -41,8 +41,8 @@ void KDtree::getNei_recur(KDnode* node, float* tarval, float ep, vector<Coordina
 		return;
 	if (node->type == HYPERPLANE)
 	{
-		float minv = tarval[(node->height) % dim] - ep;
-		float maxv = tarval[(node->height) % dim] + ep;
+		float minv = tarval[(node->depth) % dim] - ep;
+		float maxv = tarval[(node->depth) % dim] + ep;
 		float val = node->value;
 		if (minv <= val)
 			getNei_recur(node->left, tarval, ep, list);
@@ -87,7 +87,7 @@ KDnode::KDnode(float val, int h)
 	type = HYPERPLANE;
 	value = val;
 	coord = NULL;
-	height = h;
+	depth = h;
 }
 
 KDnode::KDnode(Coordinate* coor, int h)
@@ -95,7 +95,7 @@ KDnode::KDnode(Coordinate* coor, int h)
 	type = POINT;
 	value = 0;
 	coord = coor;
-	height = h;
+	depth = h;
 }
 
 KDnode::~KDnode()

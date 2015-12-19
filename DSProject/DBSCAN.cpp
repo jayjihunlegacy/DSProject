@@ -26,9 +26,9 @@ void DBSCAN::run()
 
 	for (int i = 0; i < num; i++)
 	{
-		int point_id = set[i]->coord->pointid + 1;
+		int point_id = set[i]->coord->pointid;
 		int c_id = DSnode::FIND(set[i])->coord->pointid;
-		c_id = set[i]->coord->ismember ? c_id + 1: -1;
+		c_id = set[i]->coord->ismember ? c_id: -1;
 		printf("%d %d\n",point_id,c_id);
 	}
 }

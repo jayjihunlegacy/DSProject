@@ -32,7 +32,7 @@ public:
 
 	void print();
 
-	int height;
+	int depth;
 	int type;
 	float value;
 	Coordinate* coord;
